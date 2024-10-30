@@ -6,12 +6,361 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/welcome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="8dp"
+        android:text="@string/main_base_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+
+    <EditText
+        android:id="@+id/nom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_base_name_title"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textNom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/main_base_name_title"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/nom"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/prenom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_base_firstname_title"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/nom" />
+
+    <TextView
+        android:id="@+id/textprenom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_base_firstname_title"
+        app:layout_constraintBottom_toBottomOf="@+id/prenom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNom" />
+
+
+    <TextView
+        android:id="@+id/textDateNes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_base_birthdate_title"
+        app:layout_constraintBottom_toBottomOf="@+id/DateAnniv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textprenom" />
+
+
+    <EditText
+        android:id="@+id/DateAnniv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/main_base_birthdate_title"
+        android:hint="@string/main_base_birthdate_title"
+        android:inputType="date"
+        app:layout_constraintEnd_toStartOf="@+id/image_button_cake"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/prenom" />
+
+    <ImageButton
+        android:id="@+id/image_button_cake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/main_base_birthdate_title"
+        android:src="@drawable/cake"
+        app:layout_constraintBottom_toBottomOf="@+id/DateAnniv"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/textNationalite"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_base_nationality_title"
+        app:layout_constraintBottom_toBottomOf="@+id/element"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDateNes" />
+
+    <Spinner
+        android:id="@+id/element"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:entries="@array/nationalities"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/DateAnniv" />
+
+
+    <TextView
+        android:id="@+id/textOccupation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_occupation_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNationalite" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textOccupation">
+
+        <RadioButton
+            android:id="@+id/etudiant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_base_occupation_student" />
+
+        <RadioButton
+            android:id="@+id/employe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_base_occupation_worker" />
+    </RadioGroup>
+
+    <!-- ETUDIANT -->
+
+    <TextView
+        android:id="@+id/DonneeEtudiant"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="@string/main_specific_students_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+
+    <EditText
+        android:id="@+id/ecoleUniversite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_specific_school_title"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/DonneeEtudiant" />
+
+    <TextView
+        android:id="@+id/textEcoleUniversite"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_specific_school_title"
+        app:layout_constraintBottom_toBottomOf="@+id/ecoleUniversite"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DonneeEtudiant" />
+
+
+    <EditText
+        android:id="@+id/anneeDiplome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_specific_graduationyear_title"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/ecoleUniversite" />
+
+    <TextView
+        android:id="@+id/textAnneeDiplome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_specific_graduationyear_title"
+        app:layout_constraintBottom_toBottomOf="@+id/anneeDiplome"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textEcoleUniversite" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupEtudiant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="textAnneeDiplome,anneeDiplome,textEcoleUniversite,ecoleUniversite,DonneeEtudiant" />
+
+
+    <!-- EMPLOYE -->
+
+    <TextView
+        android:id="@+id/DonneeEmploye"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="@string/main_specific_workers_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+
+    <TextView
+        android:id="@+id/textEntreprise"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_specific_compagny_title"
+        app:layout_constraintBottom_toBottomOf="@+id/entreprise"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DonneeEmploye" />
+
+    <EditText
+        android:id="@+id/entreprise"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_specific_compagny_title"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/DonneeEmploye" />
+
+    <TextView
+        android:id="@+id/textSecteur"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_specific_sector_title"
+        app:layout_constraintBottom_toBottomOf="@+id/secteur"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textEntreprise" />
+
+    <Spinner
+        android:id="@+id/secteur"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:entries="@array/sectors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/entreprise" />
+
+
+    <TextView
+        android:id="@+id/textExperiance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/main_specific_experience_title"
+        app:layout_constraintBottom_toBottomOf="@+id/experiance"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSecteur" />
+
+
+    <EditText
+        android:id="@+id/experiance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_specific_experience_title"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/secteur" />
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupEntreprise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="DonneeEmploye,textEntreprise,entreprise,textSecteur,secteur,textExperiance,experiance" />
+
+
+
+
+    <!--
+
+        <EditText
+android:id="@+id/email"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Adresse e-m"
+android:inputType="textEmailAddress"
+/>
+
+        <EditText
+            android:id="@+id/commentaires"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Commentaires"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/annuler"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ANNULER"
+                android:backgroundTint="#800080"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="OK"
+                android:backgroundTint="#800080"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+    Données Complémentaires -->
 </androidx.constraintlayout.widget.ConstraintLayout>
