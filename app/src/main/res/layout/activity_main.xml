@@ -329,7 +329,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
-        android:text="@string/main_specific_workers_title"
+        android:text="@string/additional_title"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
