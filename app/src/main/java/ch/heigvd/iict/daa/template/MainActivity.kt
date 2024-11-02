@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.Person
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -20,16 +21,17 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
 import ch.heigvd.iict.daa.labo3.Student
 import ch.heigvd.iict.daa.labo3.Worker
+import java.text.DateFormat
 import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
+
+    // Variable pour stocker la date sélectionnée par l'utilisateur
+    private var selectedDate: Calendar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
-
 
 
         // Référence au champ de date
@@ -41,8 +43,7 @@ class MainActivity : AppCompatActivity() {
             showDatePickerDialog(dateAnnivEditText)
         }
 
-
-
+        
         // Spinner
         nationalitySpinner()
         SecteurSpinner()
@@ -52,12 +53,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun buttonListener(){
+    private fun buttonListener() {
         val mainLayout = findViewById<ConstraintLayout>(R.id.main)
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroup)
 
         // Bouton clear
-        findViewById<Button>(R.id.annuler).setOnClickListener{
+        findViewById<Button>(R.id.annuler).setOnClickListener {
             for (i in 0 until mainLayout.childCount) {
                 val view = mainLayout.getChildAt(i)
 
@@ -67,49 +68,63 @@ class MainActivity : AppCompatActivity() {
                     is RadioGroup -> view.clearCheck()
                 }
             }
-            setGroupVisibility(false,false)
+            setGroupVisibility(false, false)
+            selectedDate = null
         }
 
         // Bouton Ok
-        val oKButton = findViewById<Button>(R.id.ok)
-        oKButton.setOnClickListener {
-            if ( radioGroup.checkedRadioButtonId == R.id.etudiant) {
-                //Student();
-                val exampleStudent = Student(
-                    "Dreher",
-                    "Matthias",
-                    Calendar.getInstance().apply {
-                        set(Calendar.YEAR, 1998)
-                        set(Calendar.MONTH, Calendar.APRIL)
-                        set(Calendar.DAY_OF_MONTH, 8)
-                    },
-                    "Allemande",
-                    "HEIG-VD",
-                    2023,
-                    "m.dreher@email.com",
-                    "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                )
-            }else if ( radioGroup.checkedRadioButtonId == R.id.employe) {
+        findViewById<Button>(R.id.ok).setOnClickListener {
+            // Récupérer les valeurs du formulaire
+            val name = findViewById<EditText>(R.id.nom).text.toString()
+            val firstName = findViewById<EditText>(R.id.prenom).text.toString()
+            val nationality = findViewById<Spinner>(R.id.element).selectedItem.toString()
+            val email = findViewById<EditText>(R.id.email).text.toString()
+            val remark = findViewById<EditText>(R.id.commentaires).text.toString()
 
-            }else{
+            // Utiliser la date sélectionnée ou la date actuelle
+            val birthDay = selectedDate ?: Calendar.getInstance()
+
+            if (radioGroup.checkedRadioButtonId == R.id.etudiant) {
+                val university = findViewById<EditText>(R.id.ecoleUniversite).text.toString()
+                val graduationYear =
+                    findViewById<EditText>(R.id.anneeDiplome).text.toString().toIntOrNull() ?: 2023
+
+                // Créer une instance de Student
+                val student = Student(name, firstName, birthDay, nationality, university, graduationYear, email, remark)
+
+                // Écrire les informations dans le log
+                Log.d("StudentInfo", "Student instance: $student")
+
+
+            } else if (radioGroup.checkedRadioButtonId == R.id.employe) {
+                val company = findViewById<EditText>(R.id.entreprise).text.toString()
+                val sector = findViewById<Spinner>(R.id.secteur).selectedItem.toString()
+                val experienceYear =
+                    findViewById<EditText>(R.id.experiance).text.toString().toIntOrNull() ?: 1
+
+                // Créer une instance de Worker
+                val worker = Worker(name, firstName, birthDay, nationality, company, sector, experienceYear, email, remark)
+
+                // Écrire les informations dans le log
+                Log.d("WorkerInfo", "Worker instance: $worker")
 
             }
+
         }
 
 
-        // Radio bouton pour selection etudiant ou employe
-        radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.etudiant -> {
-                    setGroupVisibility(true,false)
-                }
-                R.id.employe -> {
-                    setGroupVisibility(false,true)
+            // Radio bouton pour selection etudiant ou employe
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.etudiant -> {
+                        setGroupVisibility(true, false)
+                    }
+
+                    R.id.employe -> {
+                        setGroupVisibility(false, true)
+                    }
                 }
             }
-        }
-
-
 
     }
 
@@ -119,9 +134,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
     private fun showDatePickerDialog(editText: EditText) {
+
         // Obtenir la date actuelle
-        val calendar = Calendar.getInstance()
+        val calendar = selectedDate ?: Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -129,9 +146,20 @@ class MainActivity : AppCompatActivity() {
         // Créer et afficher le DatePickerDialog
         val datePickerDialog = DatePickerDialog(this,
             { _, selectedYear, selectedMonth, selectedDay ->
+                // Mettre à jour la date sélectionnée
+                selectedDate = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, selectedYear)
+                    set(Calendar.MONTH, selectedMonth)
+                    set(Calendar.DAY_OF_MONTH, selectedDay)
+                }
+
+                // Utiliser DateFormat pour formater la date localisée
+                val format = DateFormat.getDateInstance();
+                val formattedDate = selectedDate?.time?.let { format.format(it) }
+
                 // Mettre à jour le champ de date avec la date sélectionnée
-                val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                editText.setText(selectedDate)
+                editText.setText(formattedDate)
+
             }, year, month, day
         )
 
