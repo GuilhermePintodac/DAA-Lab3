@@ -221,7 +221,7 @@
         android:id="@+id/groupEtudiant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="textAnneeDiplome,anneeDiplome,textEcoleUniversite,ecoleUniversite,DonneeEtudiant" />
 
 
@@ -375,11 +375,17 @@
         android:id="@+id/commentaires"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textCapSentences"
         android:minLines="3"
+        android:gravity="top|start"
+        android:scrollbars="vertical"
+        android:imeOptions="flagNoEnterAction"
+        android:importantForAccessibility="yes"
+        android:autofillHints="autofill"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textCommentaire" />
+
 
 
     <Button
