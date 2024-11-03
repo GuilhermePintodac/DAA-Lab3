@@ -1,7 +1,6 @@
 package ch.heigvd.iict.daa.template
 
 import android.app.DatePickerDialog
-import android.app.Person
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -43,10 +42,11 @@ class MainActivity : AppCompatActivity() {
             showDatePickerDialog(dateAnnivEditText)
         }
 
-        
+
         // Spinner
-        nationalitySpinner()
-        SecteurSpinner()
+        // Configurer les spinners
+        setupSpinner(R.id.element, R.array.nationalities, "Sélectionner")
+        setupSpinner(R.id.secteur, R.array.sectors, "Sélectionner")
 
         // Listener
         buttonListener()
@@ -166,45 +166,19 @@ class MainActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    private fun setupSpinner(spinnerId: Int, arrayId: Int, defaultText: String) {
+        val spinner = findViewById<Spinner>(spinnerId)
 
-    private fun nationalitySpinner(){
-        val spinner = findViewById<Spinner>(R.id.element)
+        // Récupérer les valeurs de la ressource et ajouter l'élément par défaut
+        val items = resources.getStringArray(arrayId).toMutableList()
+        items.add(0, defaultText)
 
-        val nationalities = resources.getStringArray(R.array.nationalities).toMutableList()
-        nationalities.add(0, "Sélectionner")
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nationalities)
+        // Créer l'adaptateur
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if (position == 0) {
-                    // Si l'utilisateur sélectionne "Sélectionner", on ignore
-                    (view as TextView).setTextColor(Color.GRAY) // Affiche en gris pour donner un effet de "placeholder"
-                } else {
-                    // Actions à réaliser lorsque l'utilisateur choisit une option valide
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Rien à faire ici
-            }
-        }
-    }
-
-    private fun SecteurSpinner(){
-        val spinner = findViewById<Spinner>(R.id.secteur)
-
-        val nationalities = resources.getStringArray(R.array.sectors).toMutableList()
-        nationalities.add(0, "Sélectionner")
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nationalities)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-
-
+        // Définir l'écouteur de sélection
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position == 0) {
