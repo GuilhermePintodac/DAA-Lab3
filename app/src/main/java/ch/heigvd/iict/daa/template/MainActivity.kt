@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Group
+import ch.heigvd.iict.daa.labo3.Person
 import ch.heigvd.iict.daa.labo3.Student
 import ch.heigvd.iict.daa.labo3.Worker
 import java.text.DateFormat
@@ -31,6 +32,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Test pour le remplissage automatique des champs Student et Worker ou null
+//        val examplePerson: Person? = Person.exampleWorker
+//        val examplePerson: Person? = Person.exampleStudent
+        val examplePerson: Person? = null;
+
+
+        // Initialiser la vue avec les données en fonction du type d'exemple sélectionné
+        if (examplePerson != null) {
+            when (examplePerson) {
+                is Worker -> initializeViewWithWorker(examplePerson)
+                is Student -> initializeViewWithStudent(examplePerson)
+            }
+        }
+
 
 
         // Référence au champ de date
@@ -52,6 +68,63 @@ class MainActivity : AppCompatActivity() {
         buttonListener()
 
     }
+
+    private fun initializeViewWithWorker(worker: Worker) {
+        findViewById<EditText>(R.id.nom).setText(worker.name)
+        findViewById<EditText>(R.id.prenom).setText(worker.firstName)
+        findViewById<EditText>(R.id.email).setText(worker.email)
+        findViewById<EditText>(R.id.commentaires).setText(worker.remark)
+        findViewById<EditText>(R.id.entreprise).setText(worker.company)
+        findViewById<EditText>(R.id.experiance).setText(worker.experienceYear.toString())
+
+        // Affiche la date de naissance formatée
+        val dateAnnivEditText = findViewById<EditText>(R.id.DateAnniv)
+        worker.birthDay?.let { birthDay ->
+            selectedDate = birthDay  // Initialiser selectedDate avec la date de naissance du Worker
+            val format = DateFormat.getDateInstance()
+            dateAnnivEditText.setText(format.format(birthDay.time))  // Mettre à jour le champ de texte avec la date formatée
+        }
+
+        // Configurer les spinners pour Nationalité et Secteur
+        setSpinnerSelection(R.id.element, worker.nationality)
+        setSpinnerSelection(R.id.secteur, worker.sector)
+
+        // Sélectionner le bon radio button pour "Employé"
+        findViewById<RadioGroup>(R.id.radioGroup).check(R.id.employe)
+        setGroupVisibility(student = false, worker = true)
+    }
+
+    private fun initializeViewWithStudent(student: Student) {
+        findViewById<EditText>(R.id.nom).setText(student.name)
+        findViewById<EditText>(R.id.prenom).setText(student.firstName)
+        findViewById<EditText>(R.id.email).setText(student.email)
+        findViewById<EditText>(R.id.commentaires).setText(student.remark)
+        findViewById<EditText>(R.id.ecoleUniversite).setText(student.university)
+        findViewById<EditText>(R.id.anneeDiplome).setText(student.graduationYear.toString())
+
+        // Affiche la date de naissance formatée
+        val dateAnnivEditText = findViewById<EditText>(R.id.DateAnniv)
+        student.birthDay?.let { birthDay ->
+            selectedDate = birthDay  // Initialiser selectedDate avec la date de naissance du Student
+            val format = DateFormat.getDateInstance()
+            dateAnnivEditText.setText(format.format(birthDay.time))  // Mettre à jour le champ de texte avec la date formatée
+        }
+
+        // Configurer le spinner pour Nationalité
+        setSpinnerSelection(R.id.element, student.nationality)
+
+        // Sélectionner le bon radio button pour "Étudiant"
+        findViewById<RadioGroup>(R.id.radioGroup).check(R.id.etudiant)
+        setGroupVisibility(student = true, worker = false)
+    }
+
+    private fun setSpinnerSelection(spinnerId: Int, value: String) {
+        val spinner = findViewById<Spinner>(spinnerId)
+        val adapter = spinner.adapter as ArrayAdapter<String>
+        val position = adapter.getPosition(value)
+        spinner.setSelection(position)
+    }
+
 
     private fun buttonListener() {
         val mainLayout = findViewById<ConstraintLayout>(R.id.main)
@@ -87,7 +160,7 @@ class MainActivity : AppCompatActivity() {
             if (radioGroup.checkedRadioButtonId == R.id.etudiant) {
                 val university = findViewById<EditText>(R.id.ecoleUniversite).text.toString()
                 val graduationYear =
-                    findViewById<EditText>(R.id.anneeDiplome).text.toString().toIntOrNull() ?: 2023
+                    findViewById<EditText>(R.id.anneeDiplome).text.toString().toIntOrNull() ?: Calendar.getInstance().get(Calendar.YEAR)
 
                 // Créer une instance de Student
                 val student = Student(name, firstName, birthDay, nationality, university, graduationYear, email, remark)
@@ -100,7 +173,7 @@ class MainActivity : AppCompatActivity() {
                 val company = findViewById<EditText>(R.id.entreprise).text.toString()
                 val sector = findViewById<Spinner>(R.id.secteur).selectedItem.toString()
                 val experienceYear =
-                    findViewById<EditText>(R.id.experiance).text.toString().toIntOrNull() ?: 1
+                    findViewById<EditText>(R.id.experiance).text.toString().toIntOrNull() ?: 0
 
                 // Créer une instance de Worker
                 val worker = Worker(name, firstName, birthDay, nationality, company, sector, experienceYear, email, remark)
@@ -184,8 +257,6 @@ class MainActivity : AppCompatActivity() {
                 if (position == 0) {
                     // Si l'utilisateur sélectionne "Sélectionner", on ignore
                     (view as TextView).setTextColor(Color.GRAY) // Affiche en gris pour donner un effet de "placeholder"
-                } else {
-                    // Actions à réaliser lorsque l'utilisateur choisit une option valide
                 }
             }
 
