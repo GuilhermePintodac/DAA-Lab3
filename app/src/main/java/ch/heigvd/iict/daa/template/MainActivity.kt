@@ -1,3 +1,9 @@
+/*
+
+Auteurs : Alexandre Shyshmarov, Guilherme Pinto
+Ce code permet la gestion du formulaire en activity_main.xml
+ */
+
 package ch.heigvd.iict.daa.template
 
 import android.app.DatePickerDialog
